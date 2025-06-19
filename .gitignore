@@ -1,0 +1,5 @@
+.env
+data/
+./src/tmp/
+./nginx
+nginx.conf/

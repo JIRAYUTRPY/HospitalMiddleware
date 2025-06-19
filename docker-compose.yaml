@@ -1,0 +1,54 @@
+version: "3"
+
+services:
+  nginx:
+    depends_on:
+      - app
+      - postgres
+    links:
+      - app
+      - postgres
+    build:
+      context: .
+      target: nginx_revproxy
+      dockerfile: ./Dockerfile
+    ports:
+      - 80:80
+    networks:
+      - reverse
+
+  app:
+    container_name: app
+    build:
+      context: .
+      target: dev
+      dockerfile: ./Dockerfile
+    ports:
+      - "3000"
+    volumes:
+      - ./src:/app
+    networks:
+      - reverse
+
+  postgres:
+    container_name: postgres
+    image: postgres:14-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: hospital_middleware
+      POSTGRES_PORT: 3000
+    ports:
+      - "3000"
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    networks:
+      - reverse
+
+# volumes:
+#   postgres_data:
+#     external: true
+
+networks:
+  reverse:
+    driver: bridge
