@@ -3,12 +3,10 @@ version: "3"
 services:
   nginx:
     depends_on:
-      - hospital_a
-      - hospital_b
+      - application
       - postgres
     links:
-      - hospital_a
-      - hospital_b
+      - application
       - postgres
     build:
       context: .
@@ -19,31 +17,15 @@ services:
     networks:
       - reverse
 
-  hospital_a:
-    container_name: hospital_a
-    environment:
-      - HOSPITAL_NAME=A
+  application:
+    container_name: application
     build:
       context: .
       target: dev
       dockerfile: ./Dockerfile
     ports:
       - "3000"
-    volumes:
-      - ./src:/app
-    networks:
-      - reverse
-
-  hospital_b:
-    container_name: hospital_b
-    environment:
-      - HOSPITAL_NAME=B
-    build:
-      context: .
-      target: dev
-      dockerfile: ./Dockerfile
-    ports:
-      - "3000"
+      - "3001"
     volumes:
       - ./src:/app
     networks:
@@ -51,16 +33,16 @@ services:
 
   postgres:
     container_name: postgres
-    image: postgres:14-alpine
+    image: postgres:latest
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: hospital_middleware
-      POSTGRES_PORT: 3000
     ports:
-      - "3000"
-    volumes:
-      - ./data:/var/lib/postgresql/data
+      - "5432:5432"
+    restart: unless-stopped
+    # volumes:
+    #   - ./data:/var/lib/postgresql/data
     networks:
       - reverse
 

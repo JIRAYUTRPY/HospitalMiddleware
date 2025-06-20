@@ -2,6 +2,7 @@ FROM golang:1.24.4-alpine3.22 as dev
 WORKDIR /app
 ENV GIN_MODE=debug
 ENV TZ Asia/Bangkok
+COPY ./.env .
 RUN apk update && \
 apk add --no-cache tzdata
 RUN go install github.com/cosmtrek/air@v1.27.3
