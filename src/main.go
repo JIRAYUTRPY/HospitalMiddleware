@@ -23,12 +23,13 @@ func main() {
 		DBPassword: os.Getenv("DB_PASSWORD"),
 		DBName:     os.Getenv("DB_NAME"),
 	}
+	hospitalName := os.Getenv("HOSPITAL_NAME")
 	fmt.Println(cfg)
 	gin.Default()
 	r := gin.Default()
 	r.GET("/", func(c *gin.Context) {
 		c.JSON(200, gin.H{
-			"message": "pong",
+			"message": fmt.Sprintf("Hello from %s", hospitalName),
 		})
 	})
 	r.Run(":3000")

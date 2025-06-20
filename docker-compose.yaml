@@ -3,10 +3,12 @@ version: "3"
 services:
   nginx:
     depends_on:
-      - app
+      - hospital_a
+      - hospital_b
       - postgres
     links:
-      - app
+      - hospital_a
+      - hospital_b
       - postgres
     build:
       context: .
@@ -17,8 +19,25 @@ services:
     networks:
       - reverse
 
-  app:
-    container_name: app
+  hospital_a:
+    container_name: hospital_a
+    environment:
+      - HOSPITAL_NAME=A
+    build:
+      context: .
+      target: dev
+      dockerfile: ./Dockerfile
+    ports:
+      - "3000"
+    volumes:
+      - ./src:/app
+    networks:
+      - reverse
+
+  hospital_b:
+    container_name: hospital_b
+    environment:
+      - HOSPITAL_NAME=B
     build:
       context: .
       target: dev
