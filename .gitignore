@@ -3,4 +3,4 @@ data/
 ./src/tmp/
 ./nginx
 nginx.conf
-src/tmp/
+src/tmp
