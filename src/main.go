@@ -30,54 +30,8 @@ func main() {
 		Logger: logger.Default.LogMode(logger.Info),
 	})
 	jwtConfig := config.GetJWTConfig()
-	nationalID := "1234567891234"
-	passportID := "1234567891235"
-	firstNameTh := "สมชาย"
-	firstNameEn := "Somchai"
-	lastNameTh := "สมหญิง"
-	lastNameEn := "Somying"
-	phoneNumber := "0812345678"
-	email := "somchai@example.com"
-	patentHN := "A"
-	patentHN2 := "B"
-	middleNameTh := "สมหญิง"
-	middleNameEn := "Somying"
-
-	patientSeed := models.PatientModel{
-		ID:           uint(1),
-		NationalID:   &nationalID,
-		FirstNameTh:  &firstNameTh,
-		MiddleNameTh: &middleNameTh,
-		LastNameTh:   &lastNameTh,
-		FirstNameEn:  &firstNameEn,
-		MiddleNameEn: &middleNameEn,
-		LastNameEn:   &lastNameEn,
-		BirthDate:    "2000-01-01",
-		Gender:       "M",
-		PhoneNumber:  &phoneNumber,
-		Email:        &email,
-		PatentHN:     patentHN,
-	}
-
-	patientSeed2 := models.PatientModel{
-		ID:           uint(2),
-		PassportID:   &passportID,
-		FirstNameTh:  &firstNameTh,
-		MiddleNameTh: &middleNameTh,
-		LastNameTh:   &lastNameTh,
-		FirstNameEn:  &firstNameEn,
-		MiddleNameEn: &middleNameEn,
-		LastNameEn:   &lastNameEn,
-		BirthDate:    "2000-01-01",
-		Gender:       "M",
-		PhoneNumber:  &phoneNumber,
-		Email:        &email,
-		PatentHN:     patentHN2,
-	}
 
 	db.AutoMigrate(&models.PatientModel{}, &models.StaffModel{})
-	db.Create(&patientSeed)
-	db.Create(&patientSeed2)
 
 	if err != nil {
 		panic(err)
