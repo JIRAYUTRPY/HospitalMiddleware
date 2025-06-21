@@ -26,11 +26,10 @@ var (
 func main() {
 
 	config := config.DatabaseConfig{}
-
 	db, err := gorm.Open(postgres.Open(config.GetConnectionString()), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Info),
 	})
-
+	jwtConfig := config.GetJWTConfig()
 	nationalID := "1234567891234"
 	passportID := "1234567891235"
 	firstNameTh := "สมชาย"
@@ -76,7 +75,7 @@ func main() {
 		PatentHN:     patentHN2,
 	}
 
-	db.AutoMigrate(&models.PatientModel{})
+	db.AutoMigrate(&models.PatientModel{}, &models.StaffModel{})
 	db.Create(&patientSeed)
 	db.Create(&patientSeed2)
 
@@ -88,7 +87,7 @@ func main() {
 		Addr:         ":3000",
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 10 * time.Second,
-		Handler:      routes.HospitalRouter("A", db),
+		Handler:      routes.HospitalRouter("A", db, &jwtConfig),
 		ErrorLog:     log.Default(),
 	}
 
@@ -96,7 +95,7 @@ func main() {
 		Addr:         ":3001",
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 10 * time.Second,
-		Handler:      routes.HospitalRouter("B", db),
+		Handler:      routes.HospitalRouter("B", db, &jwtConfig),
 		ErrorLog:     log.Default(),
 	}
 

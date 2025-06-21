@@ -18,8 +18,13 @@ type DatabaseConfig struct {
 	DBName   string
 }
 
+type JWTConfig struct {
+	AccessSecret string
+}
+
 type Config interface {
 	GetConnectionString() string
+	GetJWTConfig() JWTConfig
 	Migration()
 }
 
@@ -50,6 +55,17 @@ func (c *DatabaseConfig) GetConnectionString() string {
 		panic("DB_NAME is not set")
 	}
 	return fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", c.Host, c.Port, c.User, c.Password, c.DBName)
+}
+
+func (c *DatabaseConfig) GetJWTConfig() JWTConfig {
+	err := godotenv.Load()
+	if err != nil {
+		slog.Error("Error loading .env file", "error", err)
+		panic("Error loading .env file")
+	}
+	return JWTConfig{
+		AccessSecret: os.Getenv("JWT_ACCESS_SECRET"),
+	}
 }
 
 func (c *DatabaseConfig) Migration(ctx context.Context) {

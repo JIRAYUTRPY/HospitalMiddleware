@@ -8,19 +8,19 @@ import (
 
 type PatientModel struct {
 	ID           uint      `gorm:"primaryKey;autoIncrement"`
-	NationalID   *string   `gorm:"column:national_id"`
-	PassportID   *string   `gorm:"column:passport_id"`
-	FirstNameTh  *string   `gorm:"column:first_name_th"`
-	MiddleNameTh *string   `gorm:"column:middle_name_th"`
-	LastNameTh   *string   `gorm:"column:last_name_th"`
-	FirstNameEn  *string   `gorm:"column:first_name_en"`
-	MiddleNameEn *string   `gorm:"column:middle_name_en"`
-	LastNameEn   *string   `gorm:"column:last_name_en"`
-	BirthDate    string    `gorm:"column:birth_date"`
-	Gender       string    `gorm:"column:gender"`
-	PhoneNumber  *string   `gorm:"column:phone_number"`
-	Email        *string   `gorm:"column:email"`
-	PatentHN     string    `gorm:"column:patent_hn"`
+	NationalID   *string   `gorm:"column:national_id;type:varchar(255);not null;default:''"`
+	PassportID   *string   `gorm:"column:passport_id;type:varchar(255);not null;default:''"`
+	FirstNameTh  *string   `gorm:"column:first_name_th;type:varchar(255)"`
+	MiddleNameTh *string   `gorm:"column:middle_name_th;type:varchar(255)"`
+	LastNameTh   *string   `gorm:"column:last_name_th;type:varchar(255)"`
+	FirstNameEn  *string   `gorm:"column:first_name_en;type:varchar(255)"`
+	MiddleNameEn *string   `gorm:"column:middle_name_en;type:varchar(255)"`
+	LastNameEn   *string   `gorm:"column:last_name_en;type:varchar(255)"`
+	BirthDate    string    `gorm:"column:birth_date;type:date"`
+	Gender       string    `gorm:"column:gender;type:varchar(10)"`
+	PhoneNumber  *string   `gorm:"column:phone_number;type:varchar(255)"`
+	Email        *string   `gorm:"column:email;type:varchar(255)"`
+	PatentHN     string    `gorm:"column:patent_hn;type:varchar(10);not null;default:'A'"`
 	CreatedAt    time.Time `gorm:"column:created_at;autoCreateTime"`
 	UpdatedAt    time.Time `gorm:"column:updated_at;autoUpdateTime"`
 }
