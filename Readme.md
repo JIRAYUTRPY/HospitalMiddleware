@@ -1,5 +1,39 @@
 # Hospital Middleware
 
+## Requirements
+
+- docker compose
+
+## Setup Steps
+
+copy `.env.example` to `.env` in /src directory
+
+```
+docker Compose up -d
+```
+
+run in root directory
+
+```
+- curl -l http://hospital-a.localhost/api/v1
+```
+
+- if success, you will see `{"message":"Hospital A"}`
+
+```
+- curl -l http://hospital-b.localhost/api/v1
+```
+
+- if success, you will see `{"message":"Hospital B"}`
+
+## Tests
+
+- Run `go test .` in 'src/tests' directory.
+
+## ERD
+
+![ERD](erd.png)
+
 ## Project Structure
 
 - **Root Directory**
@@ -24,7 +58,7 @@
         - `models/`: Data models.
         - `config/`: Configuration files.
 
-## Generate API Spec
+# API SPEC
 
 ### Health Check
 
@@ -96,65 +130,3 @@
       - status: 500
       - payload:
         - `reason`: Failed to generate tokens.
-
-### Patient Routes
-
-- **Get Patient by ID**
-  - **Endpoint**: `GET /api/v1/patient/:id`
-  - **Description**: Retrieves patient information by passport or national ID.
-  - **Middleware**: Requires authentication.
-  - **Request**:
-    - headers:
-      - `Authorization`: `Bearer <access_token>`
-      - `Accept-Language`: `th` or `en` or `none`
-      - `Content-Type`: `application/json`
-    - path:
-      - `id (required)`: Patient ID.
-  - **Response**:
-    - success:
-      - status: 200
-      - payload:
-        - `id`: Patient passport or national ID.
-        - `birth_date`: Patient birth date.
-        - `gender`: Patient gender.
-        - `phone_number`: Patient phone number.
-        - `address`: Patient address.
-        - `city`: Patient city.
-        - `province`: Patient province.
-        - `first_name_th`: Patient first name in Thai.
-        - `middle_name_th`: Patient middle name in Thai.
-        - `last_name_th`: Patient last name in Thai.
-        - `first_name_en`: Patient first name in English.
-        - `middle_name_en`: Patient middle name in English.
-        - `last_name_en`: Patient last name in English.
-    - error:
-      - status: 400
-      - payload:
-        - `reason`: ID is required.
-        - `reason`: ID must be a number and 13 digits.
-      - status: 404
-      - payload:
-        - `reason`: Patient not found.
-      - status: 500
-      - payload:
-        - `reason`: Error from system.
-
-### Run development Environment
-
-- **Requirements**:
-
-  - Docker
-  - Docker Compose
-
-- **Steps**:
-
-  - copy `.env.example` to `.env` in /src directory
-  - Docker Compose up -d
-    - run in root directory
-  - curl -l http://localhost:3000/api/v1/
-    - if success, you will see `{"message":"Hospital A"}`
-  - curl -l http://localhost:3001/api/v1/staff/login
-    - if success, you will see `{"message":"Hospital B"}`
-
-- **Test**:
-  - Run `go test ./src/tests/...` in root directory.
